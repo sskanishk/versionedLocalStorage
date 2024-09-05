@@ -36,4 +36,14 @@ class VersionedLocalStorage {
         localStorage.setItem(key, JSON.stringify(versionedValue));
         this.saveVersion(key, versionedValue);
     }
+
+    // Get the latest version of the key
+    get(key) {
+        const item = localStorage.getItem(key);
+        if (!item) return null;
+
+        const { value } = JSON.parse(item);
+
+        return JSON.parse(value);
+    }
 }

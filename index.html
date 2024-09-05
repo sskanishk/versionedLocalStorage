@@ -15,11 +15,16 @@
         <h3>Set a Key</h3>
         <label for="key">Key:</label>
         <input type="text" id="key" placeholder="Enter key name" />
-
         <label for="value">Value (JSON or String):</label>
         <textarea id="value" placeholder="Enter value (JSON or string)"></textarea>
-
         <button onclick="setKey()">Set Key</button>
+
+        <!-- Get Key Section -->
+        <h3>Get a Key</h3>
+        <label for="getKey">Key:</label>
+        <input type="text" id="getKey" placeholder="Enter key to retrieve" />
+        <button onclick="getKey()">Get Key</button>
+        <div id="getOutput" class="output"></div>
 
     </div>
 
@@ -40,6 +45,15 @@
 
             versionedStore.set(key, value);
             alert('Key set successfully!');
+        }
+
+        // Get a key
+        function getKey() {
+            const key = document.getElementById('getKey').value;
+            const value = versionedStore.get(key);
+
+            const output = document.getElementById('getOutput');
+            output.innerHTML = value ? `Value: ${JSON.stringify(value)}` : 'Key not found!';
         }
     </script>
 

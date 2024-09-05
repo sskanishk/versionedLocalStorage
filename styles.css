@@ -32,7 +32,7 @@ input[type="text"], input[type="number"], textarea {
 }
 
 button {
-    padding: 10px 15px;
+    padding: 6px 15px;
     background-color: #4CAF50;
     color: white;
     border: none;
@@ -42,4 +42,12 @@ button {
 
 button:hover {
     background-color: #45a049;
+}
+
+.output {
+    margin: 15px 0;
+    padding: 10px;
+    background-color: #e7f4e8;
+    border-left: 5px solid #4CAF50;
+    font-size: small;
 }
