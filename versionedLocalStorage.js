@@ -54,4 +54,22 @@ class VersionedLocalStorage {
         delete versions[key];
         localStorage.setItem(this.versionKey, JSON.stringify(versions));
     }
+
+    // Get the version history of a particular key
+    getVersionHistory(key) {
+        const versions = JSON.parse(localStorage.getItem(this.versionKey)) || {};
+        return versions[key] || [];
+    }
+
+    // Get the all versions history of a particular key
+    getAllVersions(key) {
+        const history = this.getVersionHistory(key)
+        if (history.length > 0) {
+            return history.map(version => ({
+                value: typeof version.value === 'string' ? JSON.parse(version.value) : version.value,
+                timestamp: version.timestamp
+            }));
+        }
+        return [];
+    }
 }
