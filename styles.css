@@ -50,4 +50,5 @@ button:hover {
     background-color: #e7f4e8;
     border-left: 5px solid #4CAF50;
     font-size: small;
+    width: 90%;
 }

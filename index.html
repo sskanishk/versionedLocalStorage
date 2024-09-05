@@ -26,6 +26,13 @@
         <button onclick="getKey()">Get Key</button>
         <div id="getOutput" class="output"></div>
 
+        <!-- Delete Key Section -->
+        <h2>Delete a Key</h2>
+        <label for="deleteKey">Key:</label>
+        <input type="text" id="deleteKey" placeholder="Enter key to delete" />
+        <button onclick="deleteKey()">Delete Key</button>
+        <div id="deleteOutput" class="output"></div>
+
     </div>
 
     <script src="versionedLocalStorage.js"></script>
@@ -54,6 +61,14 @@
 
             const output = document.getElementById('getOutput');
             output.innerHTML = value ? `Value: ${JSON.stringify(value)}` : 'Key not found!';
+        }
+
+        // Delete a key
+        function deleteKey() {
+            const key = document.getElementById('deleteKey').value;
+            versionedStore.del(key);
+            const output = document.getElementById('deleteOutput');
+            output.innerHTML = `Key "${key}" deleted successfully.`;
         }
     </script>
 

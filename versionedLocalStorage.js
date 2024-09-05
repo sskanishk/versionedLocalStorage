@@ -46,4 +46,12 @@ class VersionedLocalStorage {
 
         return JSON.parse(value);
     }
+
+    // Delete a key
+    del(key) {
+        localStorage.removeItem(key);
+        const versions = JSON.parse(localStorage.getItem(this.versionKey)) || {};
+        delete versions[key];
+        localStorage.setItem(this.versionKey, JSON.stringify(versions));
+    }
 }
