@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Versioned LocalStorage</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <h1>Versioned LocalStorage</h1>
+
+    <div class="container">
+        <!-- Set Key Section -->
+        <h3>Set a Key</h3>
+        <label for="key">Key:</label>
+        <input type="text" id="key" placeholder="Enter key name" />
+
+        <label for="value">Value (JSON or String):</label>
+        <textarea id="value" placeholder="Enter value (JSON or string)"></textarea>
+
+        <button onclick="setKey()">Set Key</button>
+
+    </div>
+
+    <script src="versionedLocalStorage.js"></script>
+    <script>
+        const versionedStore = new VersionedLocalStorage('MyApp');
+
+        // Set a key with optional TTL
+        function setKey() {
+            const key = document.getElementById('key').value;
+            let value = document.getElementById('value').value;
+
+            try {
+                value = JSON.parse(value); // Attempt to parse JSON
+            } catch (e) {
+                // If parsing fails, keep it as a string
+            }
+
+            versionedStore.set(key, value);
+            alert('Key set successfully!');
+        }
+    </script>
+
+</body>
+</html>
