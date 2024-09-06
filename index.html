@@ -17,6 +17,8 @@
         <input type="text" id="key" placeholder="Enter key name" />
         <label for="value">Value (JSON or String):</label>
         <textarea id="value" placeholder="Enter value (JSON or string)"></textarea>
+        <label for="ttl">TTL (seconds):</label>
+        <input type="number" id="ttl" placeholder="Enter time-to-live (optional)" />
         <button onclick="setKey()">Set Key</button>
 
         <!-- Get Key Section -->
@@ -59,13 +61,13 @@
         function setKey() {
             const key = document.getElementById('key').value;
             let value = document.getElementById('value').value;
+            const ttl = document.getElementById('ttl').value;
             try {
-                // Attempt to parse JSON
                 value = JSON.parse(value); 
             } catch (e) {
                 // If parsing fails, keep it as a string
             }
-            versionedStore.set(key, value);
+            versionedStore.set(key, value, ttl ? Number(ttl) : null);
             alert('Key set successfully!');
         }
 
@@ -80,9 +82,14 @@
         // Delete a key
         function deleteKey() {
             const key = document.getElementById('deleteKey').value;
-            versionedStore.del(key);
+            const response = versionedStore.del(key);
+            // console.log("response ", response);
             const output = document.getElementById('deleteOutput');
-            output.innerHTML = `Key "${key}" deleted successfully.`;
+            if(response) {
+                output.innerHTML = `Key "${key}" deleted successfully.`;
+            } else {
+                output.innerHTML = `Key "${key}" not found.`;
+            }
         }
 
         // Get the version history of a key
