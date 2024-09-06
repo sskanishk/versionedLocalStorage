@@ -27,18 +27,27 @@
         <div id="getOutput" class="output"></div>
 
         <!-- Delete Key Section -->
-        <h2>Delete a Key</h2>
+        <h3>Delete a Key</h3>
         <label for="deleteKey">Key:</label>
         <input type="text" id="deleteKey" placeholder="Enter key to delete" />
         <button onclick="deleteKey()">Delete Key</button>
         <div id="deleteOutput" class="output"></div>
 
         <!-- Version History Section -->
-        <h2>View Key History</h2>
+        <h3>View Key History</h3>
         <label for="historyKey">Key:</label>
         <input type="text" id="historyKey" placeholder="Enter key for history" />
         <button onclick="getHistory()">Get History</button>
         <div id="historyOutput" class="output"></div>
+
+        <!-- Rollback Key Section -->
+        <h3>Rollback Key to Specific Version</h3>
+        <label for="rollbackKey">Key:</label>
+        <input type="text" id="rollbackKey" placeholder="Enter key to rollback" />
+        <label for="rollbackTimestamp">Timestamp:</label>
+        <input type="text" id="rollbackTimestamp" placeholder="Enter timestamp to rollback" />
+        <button onclick="rollbackKey()">Rollback Key</button>
+        <div id="rollbackOutput" class="output"></div>
 
     </div>
 
@@ -50,14 +59,12 @@
         function setKey() {
             const key = document.getElementById('key').value;
             let value = document.getElementById('value').value;
-
             try {
                 // Attempt to parse JSON
                 value = JSON.parse(value); 
             } catch (e) {
                 // If parsing fails, keep it as a string
             }
-
             versionedStore.set(key, value);
             alert('Key set successfully!');
         }
@@ -66,7 +73,6 @@
         function getKey() {
             const key = document.getElementById('getKey').value;
             const value = versionedStore.get(key);
-
             const output = document.getElementById('getOutput');
             output.innerHTML = value ? `Value: ${JSON.stringify(value)}` : 'Key not found!';
         }
@@ -83,11 +89,24 @@
         function getHistory() {
             const key = document.getElementById('historyKey').value;
             const history = versionedStore.getAllVersions(key);
-
             const output = document.getElementById('historyOutput');
             output.innerHTML = history.length 
                 ? history.map(v => `<div class="history">Value: ${JSON.stringify(v.value)}, Timestamp: ${v.timestamp}</div>`).join('') 
                 : 'No history found for this key.';
+        }
+
+
+        // Rollback key to a specific version
+        function rollbackKey() {
+            const key = document.getElementById('rollbackKey').value;
+            const timestamp = document.getElementById('rollbackTimestamp').value;
+            try {
+                const result = versionedStore.rollback(key, timestamp);
+                const output = document.getElementById('rollbackOutput');
+                output.innerHTML = `Rolled back to: ${JSON.stringify(result)}`;
+            } catch (e) {
+                alert('Error during rollback: ' + e.message);
+            }
         }
     </script>
 
