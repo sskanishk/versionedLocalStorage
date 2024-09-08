@@ -3,6 +3,16 @@ class VersionedLocalStorage {
         this.namespace = namespace;
         this.versionKey = `${namespace}_versions`;
         this.init();
+
+        // Initialize the Web Worker for handling expiration
+        this.worker = new Worker('worker.js');
+
+        // Listen for messages from the worker about expired keys
+        this.worker.addEventListener('message', (event) => {
+            if (event.data.expired) {
+                this.del(event.data.key);
+            }
+        });
     }
     
 
@@ -58,6 +68,11 @@ class VersionedLocalStorage {
         };
         localStorage.setItem(key, JSON.stringify(versionedValue));
         this._saveVersion(key, versionedValue);
+
+        // Send a message to the worker to track TTL if provided
+        if (ttl) {
+            this.worker.postMessage({ key, ttl });
+        }
     }
 
 
@@ -74,6 +89,7 @@ class VersionedLocalStorage {
 
     // Delete a key
     del(key) {
+        console.log("Here Del")
         localStorage.removeItem(key);
         const versions = JSON.parse(localStorage.getItem(this.versionKey)) || {};
         if(versions[key]) {
