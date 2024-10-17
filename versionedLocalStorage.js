@@ -130,7 +130,7 @@ class VersionedLocalStorage {
         const version = history.find(v => v.timestamp === timestamp);
         // console.log("version ", version);
         if (version) {
-            const value = this._parseIfString(version.value);
+            const value = this._parseIfString(version?.value?.value);
             this.set(key, value);
             return value;
         } else {
