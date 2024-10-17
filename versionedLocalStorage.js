@@ -81,6 +81,7 @@ class VersionedLocalStorage {
         const storedItemJSON = localStorage.getItem(key);
         if (!storedItemJSON) return null;
         const storedItem = JSON.parse(storedItemJSON) || {};
+        console.log("storedItem ", storedItem)
         if (this._isKeyExpired(key, storedItem)) return null;
         const { value } = storedItem;
         return JSON.parse(value);
@@ -125,6 +126,13 @@ class VersionedLocalStorage {
 
     // Rollback to a specific version based on timestamp
     rollback(key, timestamp) {
+        const storedItemJSON = localStorage.getItem(key);
+        if (!storedItemJSON) return null;
+        const storedItem = JSON.parse(storedItemJSON) || {};
+        if(storedItem.timestamp === timestamp) {
+            alert("Cannot rollback on same timestamp");
+            return null;
+        }
         const history = this._getVersionHistory(key);
         // console.log("history ", history);
         const version = history.find(v => v.timestamp === timestamp);
